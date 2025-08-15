@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import type { Transaction, Currency } from '../../types/transaction';
-import { CURRENCIES } from '../../utils/currency';
 
 interface TransactionFormProps {
   onSubmit: (transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>;

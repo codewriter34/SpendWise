@@ -1,4 +1,4 @@
-import { SignedIn, useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/clerk-react';
 import { useTransactions } from '../../hooks/useTransactions';
 import { TransactionForm } from '../../components/dashboard/TransactionForm';
 import { TransactionList } from '../../components/dashboard/TransactionList';
