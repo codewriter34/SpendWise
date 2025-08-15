@@ -21,7 +21,7 @@ const LandingPageNavbar = () => {
           <div className="flex-shrink-0">
             <Link 
               to="/" 
-              className="text-[#FFF9AF] font-bold text-xl hover:text-white transition-colors duration-200"
+              className="!text-white font-bold text-xl hover:text-[#FFF9AF] transition-colors duration-200"
               onClick={closeMenu}
             >
               SpendWise
@@ -33,34 +33,34 @@ const LandingPageNavbar = () => {
             <div className="ml-10 flex items-baseline space-x-4">
               <a
                 href="#features"
-                className="text-[#F5F5F5] hover:text-[#FFF9AF] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                className="!text-white hover:!text-[#FFF9AF] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
                 Features
               </a>
               <a
                 href="#pricing"
-                className="text-[#F5F5F5] hover:text-[#FFF9AF] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                className="!text-white hover:!text-[#FFF9AF] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
                 Pricing
               </a>
               <a
                 href="#contact"
-                className="text-[#F5F5F5] hover:text-[#FFF9AF] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                className="!text-white hover:!text-[#FFF9AF] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
               >
                 Contact
               </a>
-                             <SignedOut>
-                 <SignInButton mode="modal">
-                   <button className="text-[#154D71] hover:text-[#1C6EA4] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                     Login
-                   </button>
-                 </SignInButton>
-                 <SignUpButton mode="modal">
-                   <button className="bg-[#FFF9AF] text-[#154D71] px-4 py-2 rounded-md text-sm font-medium hover:bg-yellow-200 transition-colors duration-200 shadow-md">
-                     Get Started
-                   </button>
-                 </SignUpButton>
-               </SignedOut>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className="!text-white hover:!text-[#FFF9AF] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                    Login
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button className="bg-[#33A1E0] !text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-[#1C6EA4] transition-colors duration-200 shadow-md">
+                    Get Started
+                  </button>
+                </SignUpButton>
+              </SignedOut>
                <SignedIn>
                  <UserButton />
                </SignedIn>
@@ -115,31 +115,31 @@ const LandingPageNavbar = () => {
              {/* Mobile Navigation Menu */}
        <div className={`${isMenuOpen ? 'block' : 'hidden'} md:hidden bg-[#154D71] shadow-lg border-t border-[#1C6EA4]`}>
          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[#154D71]">
-                     <a
+           <a
              href="#features"
-             className="block px-3 py-2 rounded-md text-base font-medium text-[#F5F5F5] hover:bg-[#FFF9AF] hover:text-[#154D71] transition-colors duration-200"
+             className="block px-3 py-2 rounded-md text-base font-medium !text-white hover:bg-[#FFF9AF] hover:!text-[#154D71] transition-colors duration-200"
              onClick={closeMenu}
            >
              Features
            </a>
            <a
              href="#pricing"
-             className="block px-3 py-2 rounded-md text-base font-medium text-[#F5F5F5] hover:bg-[#FFF9AF] hover:text-[#154D71] transition-colors duration-200"
+             className="block px-3 py-2 rounded-md text-base font-medium !text-white hover:bg-[#FFF9AF] hover:!text-[#154D71] transition-colors duration-200"
              onClick={closeMenu}
            >
              Pricing
            </a>
            <a
              href="#contact"
-             className="block px-3 py-2 rounded-md text-base font-medium text-[#F5F5F5] hover:bg-[#FFF9AF] hover:text-[#154D71] transition-colors duration-200"
+             className="block px-3 py-2 rounded-md text-base font-medium !text-white hover:bg-[#FFF9AF] hover:!text-[#154D71] transition-colors duration-200"
              onClick={closeMenu}
            >
              Contact
            </a>
-                        <SignedOut>
+             <SignedOut>
                <SignInButton mode="modal">
                  <button 
-                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-[#154D71] hover:bg-[#FFF9AF] hover:text-[#1C6EA4] transition-colors duration-200"
+                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium !text-white hover:bg-[#FFF9AF] hover:!text-[#154D71] transition-colors duration-200"
                    onClick={closeMenu}
                  >
                    Login
@@ -147,7 +147,7 @@ const LandingPageNavbar = () => {
                </SignInButton>
                <SignUpButton mode="modal">
                  <button 
-                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium bg-[#FFF9AF] text-[#154D71] hover:bg-yellow-200 transition-colors duration-200"
+                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium bg-[#33A1E0] !text-white hover:bg-[#1C6EA4] transition-colors duration-200"
                    onClick={closeMenu}
                  >
                    Get Started

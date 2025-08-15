@@ -50,15 +50,17 @@ const Dashboard = () => {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-[#F5F5F5]">
-      <DashboardNavbar />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#154D71]">Dashboard</h1>
-          <p className="text-gray-600 mt-2">Track your income and expenses</p>
-        </div>
+           return (
+           <div className="min-h-screen bg-[#F5F5F5]">
+             <DashboardNavbar />
+             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+                 {/* Header */}
+         <div className="mb-8">
+           <h1 className="text-3xl font-bold text-[#154D71]">Dashboard</h1>
+           <p className="text-gray-600 mt-2">
+             Welcome to your dashboard, {user?.firstName || user?.username || 'User'}! Track your income and expenses
+           </p>
+         </div>
 
         {/* Summary Cards */}
         <SummaryCards stats={getStats()} />

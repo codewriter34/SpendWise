@@ -19,7 +19,7 @@ export const TransactionForm = ({ onSubmit, loading = false }: TransactionFormPr
   const [formData, setFormData] = useState({
     type: 'expense' as 'income' | 'expense',
     amount: '',
-    currency: 'USD' as Currency,
+    currency: 'XAF' as Currency,
     category: '',
     description: '',
     date: new Date().toISOString().split('T')[0]
@@ -50,15 +50,15 @@ export const TransactionForm = ({ onSubmit, loading = false }: TransactionFormPr
       setShowSuccessMessage(true);
       setTimeout(() => setShowSuccessMessage(false), 3000);
 
-      // Reset form
-      setFormData({
-        type: 'expense',
-        amount: '',
-        currency: 'USD',
-        category: '',
-        description: '',
-        date: new Date().toISOString().split('T')[0]
-      });
+                   // Reset form
+             setFormData({
+               type: 'expense',
+               amount: '',
+               currency: 'XAF',
+               category: '',
+               description: '',
+               date: new Date().toISOString().split('T')[0]
+             });
       setCustomCategory('');
       setShowCustomCategory(false);
     } catch (error) {
@@ -111,36 +111,20 @@ export const TransactionForm = ({ onSubmit, loading = false }: TransactionFormPr
           </div>
         </div>
 
-        {/* Currency and Amount */}
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-1">
-            <label className="block text-sm font-medium text-[#333] mb-2">Currency</label>
-            <select
-              value={formData.currency}
-              onChange={(e) => setFormData(prev => ({ ...prev, currency: e.target.value as Currency }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#33A1E0] focus:border-transparent cursor-pointer"
-            >
-              {CURRENCIES.map(currency => (
-                <option key={currency.value} value={currency.value}>
-                  {currency.value} ({currency.symbol})
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col-span-2">
-            <label className="block text-sm font-medium text-[#333] mb-2">Amount</label>
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              value={formData.amount}
-              onChange={(e) => setFormData(prev => ({ ...prev, amount: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#33A1E0] focus:border-transparent"
-              placeholder="0.00"
-              required
-            />
-          </div>
-        </div>
+                 {/* Amount */}
+         <div>
+           <label className="block text-sm font-medium text-[#333] mb-2">Amount (FCFA)</label>
+           <input
+             type="number"
+             step="1"
+             min="0"
+             value={formData.amount}
+             onChange={(e) => setFormData(prev => ({ ...prev, amount: e.target.value }))}
+             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#33A1E0] focus:border-transparent"
+             placeholder="0"
+             required
+           />
+         </div>
 
         {/* Category */}
         <div>

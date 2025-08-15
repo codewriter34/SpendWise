@@ -5,10 +5,9 @@ interface SummaryCardsProps {
   stats: DashboardStats;
 }
 
-export const SummaryCards = ({ stats }: SummaryCardsProps) => {
-  // For now, using USD as default currency for summary cards
-  // TODO: Add currency preference to user settings
-  const defaultCurrency = 'USD' as const;
+       export const SummaryCards = ({ stats }: SummaryCardsProps) => {
+         // Using XAF as the default currency
+         const defaultCurrency = 'XAF' as const;
 
   const cards = [
     {

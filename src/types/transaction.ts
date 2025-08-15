@@ -27,3 +27,18 @@ export interface DashboardStats {
   balance: number;
   transactionCount: number;
 }
+
+export interface MonthlyData {
+  month: string;
+  income: number;
+  expenses: number;
+  balance: number;
+}
+
+export interface YearlyReport {
+  year: number;
+  monthlyData: MonthlyData[];
+  totalIncome: number;
+  totalExpenses: number;
+  totalBalance: number;
+}
