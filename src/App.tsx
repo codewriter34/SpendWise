@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { SignedIn, SignedOut, SignInButton, SignUpButton } from '@clerk/clerk-react';
+import { SignedIn } from '@clerk/clerk-react';
 import LandingPage from './pages/LandingPage/LandingPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Reports from './pages/Reports/Reports';
