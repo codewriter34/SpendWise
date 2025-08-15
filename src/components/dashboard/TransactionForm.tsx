@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import type { Transaction, Currency } from '../../types/transaction';
 
 interface TransactionFormProps {
@@ -14,7 +15,6 @@ const defaultCategories = {
 export const TransactionForm = ({ onSubmit, loading = false }: TransactionFormProps) => {
   const [showCustomCategory, setShowCustomCategory] = useState(false);
   const [customCategory, setCustomCategory] = useState('');
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [formData, setFormData] = useState({
     type: 'expense' as 'income' | 'expense',
     amount: '',
@@ -45,9 +45,8 @@ export const TransactionForm = ({ onSubmit, loading = false }: TransactionFormPr
         date: formData.date,
       });
 
-      // Show success message
-      setShowSuccessMessage(true);
-      setTimeout(() => setShowSuccessMessage(false), 3000);
+             // Show success toast
+       toast.success('Transaction added successfully!');
 
                    // Reset form
              setFormData({
@@ -60,9 +59,10 @@ export const TransactionForm = ({ onSubmit, loading = false }: TransactionFormPr
              });
       setCustomCategory('');
       setShowCustomCategory(false);
-    } catch (error) {
-      console.error('Error adding transaction:', error);
-    }
+         } catch (error) {
+       console.error('Error adding transaction:', error);
+       toast.error('Failed to add transaction. Please try again.');
+     }
   };
 
   const handleTypeChange = (type: 'income' | 'expense') => {
@@ -73,12 +73,7 @@ export const TransactionForm = ({ onSubmit, loading = false }: TransactionFormPr
     <div className="bg-white rounded-lg shadow-lg p-6">
       <h2 className="text-2xl font-bold text-[#154D71] mb-6">Add Transaction</h2>
       
-      {/* Success Message */}
-      {showSuccessMessage && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-          ✅ Transaction added successfully!
-        </div>
-      )}
+      
       
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Transaction Type */}
