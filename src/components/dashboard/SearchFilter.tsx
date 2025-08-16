@@ -36,7 +36,7 @@ export const SearchFilter = ({ onSearch, onFilterChange, transactions }: SearchF
   };
 
   const clearFilters = () => {
-    const defaultFilters = {
+    const defaultFilters: FilterOptions = {
       type: 'all',
       category: 'all',
       dateRange: 'all'

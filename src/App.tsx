@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import LandingPage from './pages/LandingPage/LandingPage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Reports from './pages/Reports/Reports';
+import Savings from './pages/Savings/Savings';
 
 function App() {
   return (
@@ -27,7 +28,14 @@ function App() {
               </SignedIn>
             }
           />
-          <Route path="/settings" element={<div className="p-8">Settings Page (Coming Soon)</div>} />
+                         <Route
+                 path="/savings"
+                 element={
+                   <SignedIn>
+                     <Savings />
+                   </SignedIn>
+                 }
+               />
           <Route path="/login" element={<div className="p-8">Login Page (Coming Soon)</div>} />
           <Route path="/register" element={<div className="p-8">Register Page (Coming Soon)</div>} />
         </Routes>
