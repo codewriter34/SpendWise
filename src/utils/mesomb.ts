@@ -111,12 +111,7 @@ export class MesombService {
    */
   static async collectMoney(request: MesombCollectRequest): Promise<MesombResponse> {
     try {
-      // Use simulation mode for testing
-      if (SIMULATION_MODE) {
-        console.log('Using simulation mode for payment');
-        return await this.simulatePayment(request);
-      }
-
+      // Always use backend API in production
       console.log('Making payment request to backend:', {
         amount: request.amount,
         service: request.service,
