@@ -2,8 +2,32 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/clerk-react';
 
+// Add CSS to override Clerk styles
+const addCustomStyles = () => {
+  const style = document.createElement('style');
+  style.textContent = `
+    .clerk-button-override {
+      color: white !important;
+      background: transparent !important;
+      border: none !important;
+      outline: none !important;
+      cursor: pointer !important;
+    }
+    .clerk-button-override:hover {
+      color: #FFF9AF !important;
+      background: transparent !important;
+    }
+  `;
+  document.head.appendChild(style);
+};
+
 const LandingPageNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Add custom styles when component mounts
+  useState(() => {
+    addCustomStyles();
+  });
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -51,19 +75,27 @@ const LandingPageNavbar = () => {
               </a>
               <SignedOut>
                 <SignInButton mode="modal">
-                  <button className="!text-white hover:!text-[#FFF9AF] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                  <button className="clerk-button-override !text-white hover:!text-[#FFF9AF] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">
                     Login
                   </button>
                 </SignInButton>
                 <SignUpButton mode="modal">
-                  <button className="bg-[#33A1E0] !text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-[#1C6EA4] transition-colors duration-200 shadow-md">
+                  <button 
+                    className="clerk-button-override !text-white hover:!text-[#FFF9AF] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                  >
                     Get Started
                   </button>
                 </SignUpButton>
               </SignedOut>
-               <SignedIn>
-                 <UserButton />
-               </SignedIn>
+              <SignedIn>
+                <Link
+                  to="/dashboard"
+                  className="!text-white hover:!text-[#FFF9AF] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
+                >
+                  Go to Dashboard
+                </Link>
+                <UserButton />
+              </SignedIn>
             </div>
           </div>
 
@@ -138,20 +170,20 @@ const LandingPageNavbar = () => {
            </a>
              <SignedOut>
                <SignInButton mode="modal">
-                 <button 
-                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium !text-white hover:bg-[#FFF9AF] hover:!text-[#154D71] transition-colors duration-200"
-                   onClick={closeMenu}
-                 >
-                   Login
-                 </button>
-               </SignInButton>
-               <SignUpButton mode="modal">
-                 <button 
-                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium bg-[#33A1E0] !text-white hover:bg-[#1C6EA4] transition-colors duration-200"
-                   onClick={closeMenu}
-                 >
-                   Get Started
-                 </button>
+                                   <button 
+                    className="clerk-button-override block w-full text-left px-3 py-2 rounded-md text-base font-medium !text-white hover:bg-[#FFF9AF] hover:!text-[#154D71] transition-colors duration-200"
+                    onClick={closeMenu}
+                  >
+                    Login
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button 
+                    className="clerk-button-override block w-full text-left px-3 py-2 rounded-md text-base font-medium !text-white hover:bg-[#FFF9AF] hover:!text-[#154D71] transition-colors duration-200"
+                    onClick={closeMenu}
+                  >
+                    Get Started
+                  </button>
                </SignUpButton>
              </SignedOut>
            <SignedIn>

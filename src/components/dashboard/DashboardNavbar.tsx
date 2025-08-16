@@ -38,10 +38,10 @@ export const DashboardNavbar = () => {
                 Dashboard
               </Link>
                              <Link
-                 to="/settings"
+                 to="/savings"
                  className="!text-white hover:!text-[#FFF9AF] px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200"
                >
-                 Settings
+                 Savings
                </Link>
                <Link
                  to="/reports"
@@ -115,11 +115,11 @@ export const DashboardNavbar = () => {
             Dashboard
           </Link>
                      <Link
-             to="/settings"
+             to="/savings"
              className="block px-3 py-2 rounded-md text-base font-medium !text-white hover:bg-[#FFF9AF] hover:!text-[#154D71] transition-colors duration-200"
              onClick={closeMenu}
            >
-             Settings
+             Savings
            </Link>
            <Link
              to="/reports"
