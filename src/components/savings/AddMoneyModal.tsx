@@ -70,7 +70,7 @@ const AddMoneyModal: React.FC<AddMoneyModalProps> = ({ isOpen, onClose }) => {
           service: formData.service,
           phoneNumber: formData.phoneNumber,
           status: 'success',
-          transactionId: response.transaction?.pk,
+          transactionId: response.transaction?.pk || `mesomb_${Date.now()}`,
           description: formData.description || 'Savings deposit'
         });
 
@@ -85,6 +85,7 @@ const AddMoneyModal: React.FC<AddMoneyModalProps> = ({ isOpen, onClose }) => {
           service: formData.service,
           phoneNumber: formData.phoneNumber,
           status: 'failed',
+          transactionId: `failed_${Date.now()}`,
           description: formData.description || 'Savings deposit'
         });
 

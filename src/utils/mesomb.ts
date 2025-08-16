@@ -5,6 +5,9 @@ const APPLICATION_KEY = import.meta.env.VITE_MESOMB_APPLICATION_KEY;
 const ACCESS_KEY = import.meta.env.VITE_MESOMB_ACCESS_KEY;
 const SECRET_KEY = import.meta.env.VITE_MESOMB_SECRET_KEY;
 
+// Backend API URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
 // Enable simulation mode for testing (set to false for production)
 const SIMULATION_MODE = false;
 
@@ -14,7 +17,8 @@ console.log('Mesomb Config Check:', {
   ACCESS_KEY: ACCESS_KEY ? 'Set' : 'Missing',
   SECRET_KEY: SECRET_KEY ? 'Set' : 'Missing',
   hasAllKeys: !!(APPLICATION_KEY && ACCESS_KEY && SECRET_KEY),
-  SIMULATION_MODE
+  SIMULATION_MODE,
+  BACKEND_URL
 });
 
 // Validate environment variables
@@ -103,152 +107,127 @@ export class MesombService {
   }
 
   /**
-   * Collect money from mobile money account
+   * Collect money from mobile money account using backend API
    */
   static async collectMoney(request: MesombCollectRequest): Promise<MesombResponse> {
     try {
-      // Force simulation mode in browser environment due to SDK compatibility issues
-      if (isBrowserEnvironment()) {
-        console.log('Browser environment detected - using simulation mode for compatibility');
-        return await this.simulatePayment(request);
-      }
-
       // Use simulation mode for testing
       if (SIMULATION_MODE) {
         console.log('Using simulation mode for payment');
         return await this.simulatePayment(request);
       }
 
-      if (!validateMesombConfig()) {
-        throw new Error('Mesomb is not configured. Please check your environment variables.');
-      }
-
-      // Additional validation for API keys
-      if (!APPLICATION_KEY || !ACCESS_KEY || !SECRET_KEY) {
-        throw new Error('One or more Mesomb API keys are missing');
-      }
-
-      // Try to create client instance with error handling
-      let client;
-      try {
-        client = new (PaymentOperation as any)(APPLICATION_KEY, ACCESS_KEY, SECRET_KEY);
-      } catch (constructorError) {
-        console.error('Failed to create Mesomb client:', constructorError);
-        throw new Error('Failed to initialize payment client. This might be a browser compatibility issue.');
-      }
-
-      console.log('Making Mesomb collect request:', {
+      console.log('Making payment request to backend:', {
         amount: request.amount,
         service: request.service,
         payer: request.payer,
-        trxID: request.trxID
+        trxID: request.trxID,
+        backendUrl: BACKEND_URL
       });
 
-      const response = await client.makeCollect({
-        amount: request.amount,
-        service: request.service,
-        payer: request.payer,
-        nonce: RandomGenerator.nonce(),
-        trxID: request.trxID || `savings_${Date.now()}`,
+      // Make request to backend API
+      const response = await fetch(`${BACKEND_URL}/api/payments/collect`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: request.amount,
+          service: request.service,
+          payer: request.payer,
+          trxID: request.trxID || `savings_${Date.now()}`,
+          description: request.description || 'Savings deposit'
+        }),
       });
 
-      console.log('Mesomb response:', response);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Backend response:', data);
 
       return {
-        success: response.success,
-        message: response.message,
-        status: response.status,
-        transaction: response.transaction ? {
-          pk: response.transaction.pk || '',
-          amount: response.transaction.amount || 0,
-          service: response.transaction.service || '',
-          payer: (response.transaction as any).payer || '',
-          status: response.transaction.status || '',
-          created_at: (response.transaction as any).created_at || new Date().toISOString(),
-        } : undefined,
+        success: data.success,
+        message: data.message,
+        status: data.status,
+        transaction: data.transaction,
+        error: data.error
       };
+
     } catch (error) {
-      console.error('Mesomb collect error:', error);
+      console.error('Payment error:', error);
       
-      // More specific error handling
-      if (error instanceof Error) {
-        if (error.message.includes('sigBytes') || error.message.includes('key is undefined')) {
-          console.log('Browser compatibility issue detected - falling back to simulation');
-          return await this.simulatePayment(request);
-        }
-        return {
-          success: false,
-          message: error.message,
-          status: 'ERROR',
-          error: error.message
-        };
+      // Fall back to simulation if backend is not available
+      if (error instanceof Error && error.message.includes('fetch')) {
+        console.log('Backend not available - falling back to simulation');
+        return await this.simulatePayment(request);
       }
       
       return {
         success: false,
         message: 'Failed to process payment',
         status: 'ERROR',
-        error: 'Unknown error occurred',
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
       };
     }
   }
 
   /**
-   * Deposit money to mobile money account
+   * Deposit money to mobile money account using backend API
    */
   static async depositMoney(request: MesombCollectRequest): Promise<MesombResponse> {
     try {
-      // Force simulation mode in browser environment due to SDK compatibility issues
-      if (isBrowserEnvironment()) {
-        console.log('Browser environment detected - using simulation mode for compatibility');
-        return await this.simulatePayment(request);
-      }
-
       // Use simulation mode for testing
       if (SIMULATION_MODE) {
         console.log('Using simulation mode for deposit');
         return await this.simulatePayment(request);
       }
 
-      if (!validateMesombConfig()) {
-        throw new Error('Mesomb is not configured. Please check your environment variables.');
-      }
-
-      // Additional validation for API keys
-      if (!APPLICATION_KEY || !ACCESS_KEY || !SECRET_KEY) {
-        throw new Error('One or more Mesomb API keys are missing');
-      }
-
-      // Create client instance for each request to avoid constructor issues
-      const client = new (PaymentOperation as any)(APPLICATION_KEY, ACCESS_KEY, SECRET_KEY);
-
-      const response = await client.makeDeposit({
+      console.log('Making deposit request to backend:', {
         amount: request.amount,
         service: request.service,
-        receiver: request.payer,
-        nonce: RandomGenerator.nonce(),
-        trxID: request.trxID || `savings_deposit_${Date.now()}`,
+        payer: request.payer,
+        trxID: request.trxID,
+        backendUrl: BACKEND_URL
       });
 
+      // Make request to backend API (you might need to create a deposit endpoint)
+      const response = await fetch(`${BACKEND_URL}/api/payments/deposit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: request.amount,
+          service: request.service,
+          payer: request.payer,
+          trxID: request.trxID || `savings_deposit_${Date.now()}`,
+          description: request.description || 'Savings deposit'
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Backend response:', data);
+
       return {
-        success: response.success,
-        message: response.message,
-        status: response.status,
-        transaction: response.transaction ? {
-          pk: response.transaction.pk || '',
-          amount: response.transaction.amount || 0,
-          service: response.transaction.service || '',
-          payer: (response.transaction as any).receiver || '',
-          status: response.transaction.status || '',
-          created_at: (response.transaction as any).created_at || new Date().toISOString(),
-        } : undefined,
+        success: data.success,
+        message: data.message,
+        status: data.status,
+        transaction: data.transaction,
+        error: data.error
       };
+
     } catch (error) {
-      console.error('Mesomb deposit error:', error);
+      console.error('Deposit error:', error);
       
-      // Fall back to simulation on browser compatibility errors
-      if (error instanceof Error && (error.message.includes('sigBytes') || error.message.includes('key is undefined'))) {
-        console.log('Browser compatibility issue detected - falling back to simulation');
+      // Fall back to simulation if backend is not available
+      if (error instanceof Error && error.message.includes('fetch')) {
+        console.log('Backend not available - falling back to simulation');
         return await this.simulatePayment(request);
       }
       
