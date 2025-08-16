@@ -125,6 +125,8 @@ export class MesombService {
         backendUrl: BACKEND_URL
       });
 
+      console.log('Attempting to fetch from:', `${BACKEND_URL}/api/payments/collect`);
+
       // Make request to backend API
       const response = await fetch(`${BACKEND_URL}/api/payments/collect`, {
         method: 'POST',
@@ -140,8 +142,13 @@ export class MesombService {
         }),
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.log('Response error text:', errorText);
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
 
       const data = await response.json();
@@ -157,9 +164,11 @@ export class MesombService {
 
     } catch (error) {
       console.error('Payment error:', error);
+      console.error('Error type:', typeof error);
+      console.error('Error message:', error instanceof Error ? error.message : 'Unknown error');
       
       // Fall back to simulation if backend is not available
-      if (error instanceof Error && error.message.includes('fetch')) {
+      if (error instanceof Error && (error.message.includes('fetch') || error.message.includes('Failed to fetch'))) {
         console.log('Backend not available - falling back to simulation');
         return await this.simulatePayment(request);
       }
