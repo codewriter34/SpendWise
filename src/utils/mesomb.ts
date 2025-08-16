@@ -1,5 +1,3 @@
-import { PaymentOperation, RandomGenerator } from '@hachther/mesomb';
-
 // Environment variables for Mesomb configuration
 const APPLICATION_KEY = import.meta.env.VITE_MESOMB_APPLICATION_KEY;
 const ACCESS_KEY = import.meta.env.VITE_MESOMB_ACCESS_KEY;
@@ -35,10 +33,7 @@ const validateMesombConfig = () => {
   return true;
 };
 
-// Check if we're in a browser environment
-const isBrowserEnvironment = () => {
-  return typeof window !== 'undefined' && typeof document !== 'undefined';
-};
+
 
 export interface MesombCollectRequest {
   amount: number;
